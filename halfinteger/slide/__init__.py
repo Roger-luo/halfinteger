@@ -42,11 +42,11 @@ def revealjs(filename):
     return send_from_directory(static_path, filename)
 
 
-@blueprint.route('/media/<filename>')
-def get_img(filename):
-    media = os.path.join(current_app.root_path,
-                         current_app.config['DIR']['media'])
-    return send_from_directory(media, filename)
+# @blueprint.route('/media/<filename>')
+# def get_img(filename):
+#     media = os.path.join(current_app.root_path,
+#                          current_app.config['DIR']['media'])
+#     return send_from_directory(media, filename)
 
 
 @blueprint.route('/<name>/')
