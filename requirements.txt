@@ -1,0 +1,4 @@
+Flask>=0.12.2
+Markdown>=2.6.11
+PyYAML>=3.12
+pymdown-extensions>=4.9.2
