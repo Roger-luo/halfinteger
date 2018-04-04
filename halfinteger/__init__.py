@@ -39,6 +39,6 @@ class Fine(BaseFlask):
 
 app = Fine(__name__)
 app.load_config()
-app.register_blueprint(halfinteger.index.blueprint, url_prefix='/')
+# app.register_blueprint(halfinteger.index.blueprint, url_prefix='/')
 app.register_blueprint(halfinteger.slide.blueprint, url_prefix='/slides')
 app.register_blueprint(halfinteger.blog.blueprint, url_prefix='/blog')

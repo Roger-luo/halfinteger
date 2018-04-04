@@ -63,7 +63,7 @@ note: This is a speaker note.
 
 ---
 background:
-    image: /media/background.jpg
+    image: /slides/media/background.jpg
 ...
 
 # Backgronud Image
