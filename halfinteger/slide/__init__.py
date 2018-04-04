@@ -36,13 +36,6 @@ def index():
     return render_template('slide/index.html', contents=contents, meta=meta)
 
 
-@blueprint.route('/media/<filename>')
-def get_img(filename):
-    media = os.path.join(current_app.root_path,
-                         current_app.config['DIR']['media'])
-    return send_from_directory(media, filename)
-
-
 @blueprint.route('/revealjs/<path:filename>')
 def revealjs(filename):
     static_path = os.path.join(os.path.dirname(__file__), 'static/revealjs')
