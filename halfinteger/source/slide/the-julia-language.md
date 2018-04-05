@@ -736,3 +736,32 @@ end
 
 **Julia's metaprogramming is much more stronger than most of the popular languages in numerical computing community, e.g Python, C/C++ and etc.**
 
+---
+note: "With strong meteprogramming, libraries with DSL (domain specific language) like [iTensor](http://itensor.org/) can be easy to implement and tasks like code generation can be extremely easy. Although, it is not totally fair that itensor and taco contains some other functionalities, but itensor is over 20k loc, but TensorOperation.jl is only 2k loc and can handle most functionalities of iTensor with Julia builtin functions."
+...
+
+iTensor tensor contraction:
+
+```c++
+Index a("a",2), 
+      b("b",2), 
+      c("c",2);
+ITensor Z(a,b), 
+        X(c,b);
+
+Z.set(a(1),b(1),+1.0);
+Z.set(a(2),b(2),-1.0);
+
+X.set(b(1),c(2),+1.0);
+X.set(b(2),c(1),+1.0);
+
+//the * operator finds and
+//contracts common index 'b'
+//regardless of index order:
+
+ITensor R = Z * X;
+
+Print( R.real(a(2),c(1)) ); 
+//output: R.real(a(1),c(2)) = -1
+```
+
