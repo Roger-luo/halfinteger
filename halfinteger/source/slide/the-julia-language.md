@@ -222,6 +222,14 @@ struct Complex{T <: Number} <: Number
 end
 ```
 
+The operatorr `<:` means subtype, you can also use it to test the relation between types.
+{: .fragment}
+
+```julia-repl
+julia> Complex <: Number
+true
+```
+
 ---
 note: "try it out! And you will receive an error."
 ...
@@ -233,12 +241,12 @@ ERROR: TypeError: Complex: in T, expected T<:Number, got Type{String}
 ```
 
 ---
-note: ""
+note: "this is the basics of composite types, and we will introduce multiple dispath along with abstract types and parameter types"
 ...
 
----
-
-### **Demo:**{: style='color: #CD5C5C'} Multiple Dispatch
+## **Multiple Dispatch**{: style='color: #CD5C5C'}
+## and Julia's 
+## **Abstractions**{: style='color: #0066ff'}
 
 ---
 note: "abstract types are something slightly similar to virtual class, it does not contain anything as its member and can not be constructed."
@@ -251,10 +259,206 @@ We could define some abstract type hierarchies.
 ```julia
 # The zoo society
 abstract type Animal end
-abstract type Bird <: Animal end
-abstract type Cat <: Animal end
+abstract type AbstractBird <: Animal end
+abstract type AbstractCat <: Animal end
 ```
 
 ---
-note: "There are two kind of composite types"
+note: "we will first define some default methods"
 ...
+
+```
+# All subtype of Animal should have a name
+name(animal::Animal) = animal.name
+gender(animal::Animal) = "unknown"
+
+# We can know about each animal if it can fly
+# By requiring this function (or property)
+# Most animals won't fly
+flyable(animal::Animal) = false
+# Most birds can
+flyable(bird::AbstractBird) = true
+```
+
+---
+note: "and we can define new composite type as subtype of an abstract type"
+...
+
+```julia
+# Kitty is a special Cat
+struct Kitty <: AbstractCat
+    weight::Float64
+end
+```
+
+define a constructor with default values
+
+```julia
+# Kitty is 0.3kg when she was born
+Kitty() = Kitty(0.3)
+```
+
+---
+note: "subtyping a composite type is invalid"
+...
+
+```julia
+struct KittyKitty <: Kitty
+end
+```
+
+---
+
+The ability of dispatching functions according to **runtime type signatures**{: style='color: #CD5C5C'}
+is called multiple dispatch.
+
+---
+note: "we will define some property for Kitty and Julia will dispatch these methods to methods with input type Kitty when you call it with type Kitty"
+...
+
+```julia
+# comment this method to see what will happen
+# Kitty's name
+name(me::Kitty) = "Kitty"
+# Kitty's gender
+gender(me::Kitty) = "female"
+```
+
+---
+note: "Julia's Multiple Dispatch will not only affects single type signatures, all kinds of type can be registered as method signature can be used for dispatch"
+...
+
+```
+# play is a kind of relationship inside the society of animals
+# Most animal won't play with others
+play(a::Animal, b::Animal) = "$(name(a)) won't play with $(name(b))"
+play(a::Animal, b::Animal, c::Animal) = "$(name(a)), $(name(b)), $(name(c)) won't play together"
+
+# Kohen will play with Kitty
+# comment this to see what will happen
+play(bird::Kohen, cat::Kitty) = "$(name(bird)) will play with $(name(cat))"
+play(cat::Kitty, bird::Kohen) = "$(name(cat)) won't play with $(name(bird))"
+```
+
+---
+note: "There is also parametric types"
+...
+
+### Parametric Types
+
+---
+note: "There are some bears in the zoo, but bears can be characterized by colors"
+...
+
+```julia
+# Bear can have different colors
+abstract type AbstractBearColor end
+abstract type Green <: AbstractBearColor end
+abstract type White <: AbstractBearColor end
+abstract type Brown <: AbstractBearColor end
+abstract type AbstractBear{T <: AbstractBearColor} <: Animal end
+```
+
+---
+note: "Multiple dispatch will also work on parameters"
+...
+
+```julia
+# we could define some general interface to All KINDS OF bears
+# and use multiple dispatch to specify methods to certain
+# type with certain type parameters (signature)
+# the word where declares type parameters
+color(::Type{AbstractBear{T}}) where T = "We don't have $T Bear"
+# you can specify type parameters' parent type if you want
+# Union will create a type union, behaves like an abstract type
+# in type inference, but it cannot be subtyped
+color(::Type{AbstractBear{T}}) where {T <: Union{Brown, White}} = T
+color(bear::AbstractBear) where T = color(typeof(bear))
+```
+
+---
+note: "multiple dispatch can work on different number of arguments"
+...
+
+```
+# Abram is a Brown bear
+struct Abram <: AbstractBear{Brown}
+end
+
+name(bear::Abram) = "Abram"
+
+# Dima is a White bear
+struct Dima <: AbstractBear{White}
+end
+
+name(bear::Dima) = "Dima"
+
+play(a::Abram, b::Dima, c::Kohen) = "Abram, Dima and Kohen often play together"
+```
+
+---
+
+** Make your hands dirty **
+
+---
+note: "try this"
+...
+
+**What is the color of Dima?**
+
+```julia-repl
+julia> color(Dima())
+```
+
+---
+note: "Now we have a complex type, but its default construct does not support real numbers, we will use multiple dispatch to correct this"
+...
+
+##### How to fix this?
+
+```julia-repl
+julia> Complex(1.0)
+ERROR: LoadError: MethodError: Cannot `convert` an object of type Float64 to an object of type Complex
+```
+
+---
+
+Try more about multiple dispatch with `zoo.jl` script.
+
+```shell
+shell> julia zoo.jl
+```
+
+---
+
+### **Mutable**{: style='color: #CD5C5C'} **Types**{: style='color: #6666ff'}
+### and
+### **Immutable**{: style='color: #CD5C5C'} **Types**{: style='color: #6666ff'}
+
+---
+note: "mutable objects are allocated on the heap and have stable memory address, immutable objects may not. To decide whether to make a type mutable ask whether two instances with the same field values would be considered identical, or if they might need to change independently over time."
+...
+
+Two essential properties of immutability in Julia:
+
+- An object with an immutable type is passed around (both in assignment statements and in function calls) by copying, whereas a mutable type is passed around by reference.
+- It is not permitted to modify the fields of a composite immutable type.
+
+---
+note: "since immutables may be allocated on stack and its state can be determined in runtime, it may also have better performance."
+...
+
+```
+# name can be changed
+mutable struct MutablePerson
+    name::String
+end
+
+# name cannot be changed
+struct Person
+    name::String
+end
+```
+
+---
+
