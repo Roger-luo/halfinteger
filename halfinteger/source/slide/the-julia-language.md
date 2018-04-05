@@ -461,4 +461,424 @@ end
 ```
 
 ---
+note: Now we know about multiple dispath, and we have our complex type
+...
 
+### Inner Constructor
+
+---
+note: Inner constructor
+...
+
+```julia
+struct Complex{T <: Number} <: Number
+    real::T
+    imag::T
+
+    function Complex(real::T, imag::T) where T
+        new(real, imag)
+    end
+end
+```
+
+---
+note: Inner constructor is useful when you need to enforce some invariants
+...
+
+```julia
+julia> struct Even
+           e::Int
+       end
+
+julia> Even(2)
+Even(2)
+```
+
+And to reject old numbers
+
+```julia
+Even(x) = iseven(x) ? Even(x) : throw(ArgumentError("x=$x is odd))
+```
+
+---
+
+This won't work, because it has the signature
+```julia
+Even(x::Any)
+```
+
+But the default constructor has
+
+```julia
+Even(x::Int)
+```
+
+Julia will call the default constructor first because of multiple dispatch. 
+
+---
+
+We will use the inner constructor instead
+
+```julia-repl
+julia> struct Even
+          e::Int
+          Even(e::Int) = iseven(e) ? new(e) : throw(ArgumentError("e=$e is odd"))
+       end
+```
+
+---
+note: "The strongest legacy of Lisp in the Julia language is its metaprogramming support. Like Lisp, Julia represents its own code as a data structure of the language itself. Since code is represented by objects that can be created and manipulated from within the language, it is possible for a program to transform and generate its own code. This allows sophisticated code generation without extra build steps, and also allows true Lisp-style macros operating at the level of abstract syntax trees."
+...
+
+## Metaprogramming
+
+---
+
+## Program Representation
+
+Every Julia program starts life as a string:
+
+```julia-repl
+julia> prog = "1 + 1"
+"1 + 1"
+```
+
+---
+
+next it will be parsed to an Julia type Expr:
+
+```julia-repl
+julia> ex1 = parse(prog)
+:(1 + 1)
+
+julia> typeof(ex1)
+Expr
+```
+
+---
+
+`Expr` objects contain two parts:
+
+- a Symbol identifying the kind of expression. A symbol is an interned string identifier.
+
+```julia-repl
+julia> ex1.head
+:call
+```
+
+---
+
+- the expression arguments, which may be symbols, other expressions, or literal values:
+
+```
+julia> ex1.args
+3-element Array{Any,1}:
+  :+
+ 1
+ 1
+```
+
+---
+
+**The key point here is that Julia code is internally represented as a data structure that is accessible from the language itself.**
+
+---
+note: "The second syntactic purpose of the : character is to create expression objects without using the explicit Expr constructor. This is referred to as quoting."
+...
+
+### Quoting
+
+---
+note: "The : character, followed by paired parentheses around a single statement of Julia code, produces an Expr object based on the enclosed code. Here is example of the short form used to quote an arithmetic expression:"
+...
+
+```julia-repl
+julia> ex = :(a+b*c+1)
+:(a + b * c + 1)
+```
+
+```julia
+ex = quote
+    x = 1
+    y = 2
+    x + y
+end
+```
+---
+note: "Direct construction of Expr objects with value arguments is powerful, but Expr constructors can be tedious compared to \"normal\" Julia syntax. As an alternative, Julia allows \"splicing\" or interpolation of literals or expressions into quoted expressions. Interpolation is indicated by the $ prefix."
+...
+
+### Interpolation
+
+---
+
+```julia-repl
+julia> a = 1;
+
+julia> ex = :($a + b)
+:(1 + b)
+```
+
+---
+
+### Evaluation
+
+---
+
+```julia-repl
+julia> a = 1; b = 2;
+
+julia> eval(:(a + b))
+3
+```
+
+---
+note: "Macros provide a method to include generated code in the final body of a program. A macro maps a tuple of arguments to a returned expression, and the resulting expression is compiled directly rather than requiring a runtime eval() call. Macro arguments may include expressions, literal values, and symbols."
+...
+
+### Macros
+
+A brief structure of Julia's execution process
+
+```julia
+prog |> readstring |> parse |> macros |> eval 
+```
+
+---
+note: "try this simple macro, to see what happens. The macro will catch expressions parsed by Julia compiler and the returns of the macro will be evaluated."
+...
+
+```julia
+macro showexpr(expr)
+    println(expr)
+end
+```
+
+---
+note: "A very special macro is @generated, which allows you to define so-called generated functions. Let's try it by example"
+...
+
+### Generated Functions
+
+---
+note: ""
+...
+
+**calculate a number from its trinary representation**
+
+```julia-repl
+@generated function tri2int(x::NTuple{N, Int}) where N
+    # you can only access x as a type inside
+    ex = :(x[1])
+    for i = 2:N
+        base = 3^(i-1)
+        ex = :($ex + x[$i] * $base)
+    end
+    return ex
+end
+```
+
+---
+
+### Why not Python, Numba, PyPy but Julia?
+
+---
+
+**Julia's Performance is not magic, the language design is**
+
+---
+note: "consider a python class, python's class is so dynamic and convenient that
+all the methods and members can be dynamically attached to the parent
+class `object`"
+...
+
+```python
+class Foo(object):
+
+    STATIC_MEMBER
+
+    def method1(self):
+        pass
+
+    def method2(self):
+        pass
+```
+
+---
+note: "It is hard for the compiler to know all its states until the object is used and will be hard to optimized, therefore numba only optimize a subset of the language and projects like pyston, pypy never acheive a nice performance."
+...
+
+```ipython
+In [1]: foo = Foo()
+
+In [2]: foo.a = 2
+
+In [3]: foo.a
+Out[3]: 2
+```
+
+---
+note: "while in python we have to use things like cython"
+...
+
+Julia itself is even C compatible (more like AOT language than Python)
+
+```julia
+Base.@ccallable function hello(n::Int)::Int
+    for i = 1:n
+        println("hello world")
+    end
+    return 0
+end
+```
+
+---
+
+**Julia's metaprogramming is much more stronger than most of the popular languages in numerical computing community, e.g Python, C/C++ and etc.**
+
+---
+note: "With strong meteprogramming, libraries with DSL (domain specific language) like [iTensor](http://itensor.org/) can be easy to implement and tasks like code generation can be extremely easy. Although, it is not totally fair that itensor and taco contains some other functionalities, but itensor is over 20k loc, but TensorOperation.jl is only 2k loc and can handle most functionalities of iTensor with Julia builtin functions."
+...
+
+iTensor tensor contraction:
+
+```c++
+Index a("a",2), 
+      b("b",2), 
+      c("c",2);
+ITensor Z(a,b), 
+        X(c,b);
+
+Z.set(a(1),b(1),+1.0);
+Z.set(a(2),b(2),-1.0);
+
+X.set(b(1),c(2),+1.0);
+X.set(b(2),c(1),+1.0);
+
+//the * operator finds and
+//contracts common index 'b'
+//regardless of index order:
+
+ITensor R = Z * X;
+
+Print( R.real(a(2),c(1)) ); 
+//output: R.real(a(1),c(2)) = -1
+```
+
+---
+
+[taco](https://github.com/tensor-compiler/taco) tensor contraction
+
+```c++
+// Create formats
+Format csr({Dense,Sparse});
+Format csf({Sparse,Sparse,Sparse});
+Format  sv({Sparse});
+
+// Create tensors
+Tensor<double> A({2,3},   csr);
+Tensor<double> B({2,3,4}, csf);
+Tensor<double> c({4},     sv);
+
+// Insert data into B and c
+B.insert({0,0,0}, 1.0);
+B.insert({1,2,0}, 2.0);
+B.insert({1,3,1}, 3.0);
+c.insert({0}, 4.0);
+c.insert({1}, 5.0);
+
+// Pack inserted data as described by the formats
+B.pack();
+c.pack();
+
+// Form a tensor-vector multiplication expression
+IndexVar i, j, k;
+A(i,j) = B(i,j,k) * c(k);
+
+// Compile the expression
+A.compile();
+
+// Assemble A's indices and numerically compute the result
+A.assemble();
+A.compute();
+```
+
+---
+
+A brief look at the [TensorOperations.jl](https://github.com/Jutho/TensorOperations.jl) tensor contraction
+
+```julia
+using TensorOperations
+α=randn()
+A=randn(5,5,5,5,5,5)
+B=randn(5,5,5)
+C=randn(5,5,5)
+D=zeros(5,5,5)
+@tensor begin
+    D[a,b,c] = A[a,e,f,c,f,g]*B[g,b,e] + α*C[c,a,b]
+    E[a,b,c] := A[a,e,f,c,f,g]*B[g,b,e] + α*C[c,a,b]
+end
+```
+
+---
+
+**Julia is the only dynamical language that can do GPGPU natively**
+
+*Effective Extensible Programming: Unleashing __Julia__ on __GPUs__: arxiv 11712.03112*{: .fragment}
+
+---
+note: "This makes Julia's GPU interface extremely generic and elegant"
+...
+
+**define CuArray like CPU**
+```julia
+xs = cu(rand(5, 5))
+ys = cu[1, 2, 3]
+xs_cpu = collect(xs)
+```
+
+---
+
+**Broadcasting Operations**
+
+Exactly the same with CPU
+
+```julia
+zs .= xs.^2 .+ ys .* 2
+```
+
+---
+
+**Write Your Own CUDA kernel**
+
+```julia
+using CuArrays, CUDAnative
+
+xs, ys, zs = CuArray(rand(1024)), CuArray(rand(1024)), CuArray(zeros(1024))
+
+function kernel_vadd(out, a, b)
+  i = (blockIdx().x-1) * blockDim().x + threadIdx().x
+  out[i] = a[i] + b[i]
+  return
+end
+
+@cuda (1, length(xs)) kernel_vadd(zs, xs, ys)
+
+@assert zs == xs + ys
+```
+
+---
+
+More details here: [Generic GPU Kernels](http://mikeinnes.github.io/2017/08/24/cudanative.html)
+
+---
+note: "Julia is a great language that it allows you to write things like Python, but if you care about the performance, here are some tips"
+...
+
+## Performance Tips
+
+---
+
+Provide as much information as possible in compile time.
+
+e.g `StaticArray` is faster than native `Array` for small size arrays.
