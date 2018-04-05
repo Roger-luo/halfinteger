@@ -809,14 +809,76 @@ A brief look at the [TensorOperations.jl](https://github.com/Jutho/TensorOperati
 
 ```julia
 using TensorOperations
-α=randn()
+alpha=randn()
 A=randn(5,5,5,5,5,5)
 B=randn(5,5,5)
 C=randn(5,5,5)
 D=zeros(5,5,5)
 @tensor begin
-    D[a,b,c] = A[a,e,f,c,f,g]*B[g,b,e] + α*C[c,a,b]
-    E[a,b,c] := A[a,e,f,c,f,g]*B[g,b,e] + α*C[c,a,b]
+    D[a,b,c] = A[a,e,f,c,f,g]*B[g,b,e] + alpha*C[c,a,b]
+    E[a,b,c] := A[a,e,f,c,f,g]*B[g,b,e] + alpha*C[c,a,b]
 end
 ```
 
+---
+
+**Julia is the only dynamical language that can do GPGPU natively**
+
+*Effective Extensible Programming: Unleashing __Julia__ on __GPUs__: arxiv 11712.03112*{: .fragment}
+
+---
+note: "This makes Julia's GPU interface extremely generic and elegant"
+...
+
+**define CuArray like CPU**
+```julia
+xs = cu(rand(5, 5))
+ys = cu[1, 2, 3]
+xs_cpu = collect(xs)
+```
+
+---
+
+**Broadcasting Operations**
+
+Exactly the same with CPU
+
+```julia
+zs .= xs.^2 .+ ys .* 2
+```
+
+---
+
+**Write Your Own CUDA kernel**
+
+```julia
+using CuArrays, CUDAnative
+
+xs, ys, zs = CuArray(rand(1024)), CuArray(rand(1024)), CuArray(zeros(1024))
+
+function kernel_vadd(out, a, b)
+  i = (blockIdx().x-1) * blockDim().x + threadIdx().x
+  out[i] = a[i] + b[i]
+  return
+end
+
+@cuda (1, length(xs)) kernel_vadd(zs, xs, ys)
+
+@assert zs == xs + ys
+```
+
+---
+
+More details here: [Generic GPU Kernels](http://mikeinnes.github.io/2017/08/24/cudanative.html)
+
+---
+note: "Julia is a great language that it allows you to write things like Python, but if you care about the performance, here are some tips"
+...
+
+## Performance Tips
+
+---
+
+Provide as much information as possible in compile time.
+
+e.g `StaticArray` is faster than native `Array` for small size arrays.
