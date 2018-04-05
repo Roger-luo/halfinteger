@@ -765,3 +765,58 @@ Print( R.real(a(2),c(1)) );
 //output: R.real(a(1),c(2)) = -1
 ```
 
+---
+
+[taco](https://github.com/tensor-compiler/taco) tensor contraction
+
+```c++
+// Create formats
+Format csr({Dense,Sparse});
+Format csf({Sparse,Sparse,Sparse});
+Format  sv({Sparse});
+
+// Create tensors
+Tensor<double> A({2,3},   csr);
+Tensor<double> B({2,3,4}, csf);
+Tensor<double> c({4},     sv);
+
+// Insert data into B and c
+B.insert({0,0,0}, 1.0);
+B.insert({1,2,0}, 2.0);
+B.insert({1,3,1}, 3.0);
+c.insert({0}, 4.0);
+c.insert({1}, 5.0);
+
+// Pack inserted data as described by the formats
+B.pack();
+c.pack();
+
+// Form a tensor-vector multiplication expression
+IndexVar i, j, k;
+A(i,j) = B(i,j,k) * c(k);
+
+// Compile the expression
+A.compile();
+
+// Assemble A's indices and numerically compute the result
+A.assemble();
+A.compute();
+```
+
+---
+
+A brief look at the [TensorOperations.jl](https://github.com/Jutho/TensorOperations.jl) tensor contraction
+
+```julia
+using TensorOperations
+α=randn()
+A=randn(5,5,5,5,5,5)
+B=randn(5,5,5)
+C=randn(5,5,5)
+D=zeros(5,5,5)
+@tensor begin
+    D[a,b,c] = A[a,e,f,c,f,g]*B[g,b,e] + α*C[c,a,b]
+    E[a,b,c] := A[a,e,f,c,f,g]*B[g,b,e] + α*C[c,a,b]
+end
+```
+
