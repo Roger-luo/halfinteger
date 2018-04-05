@@ -717,3 +717,22 @@ In [3]: foo.a
 Out[3]: 2
 ```
 
+---
+note: "while in python we have to use things like cython"
+...
+
+Julia itself is even C compatible (more like AOT language than Python)
+
+```julia
+Base.@ccallable function hello(n::Int)::Int
+    for i = 1:n
+        println("hello world")
+    end
+    return 0
+end
+```
+
+---
+
+**Julia's metaprogramming is much more stronger than most of the popular languages in numerical computing community, e.g Python, C/C++ and etc.**
+
