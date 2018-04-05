@@ -678,3 +678,42 @@ note: ""
 end
 ```
 
+---
+
+### Why not Python, Numba, PyPy but Julia?
+
+---
+
+**Julia's Performance is not magic, the language design is**
+
+---
+note: "consider a python class, python's class is so dynamic and convenient that
+all the methods and members can be dynamically attached to the parent
+class `object`"
+...
+
+```python
+class Foo(object):
+
+    STATIC_MEMBER
+
+    def method1(self):
+        pass
+
+    def method2(self):
+        pass
+```
+
+---
+note: "It is hard for the compiler to know all its states until the object is used and will be hard to optimized, therefore numba only optimize a subset of the language and projects like pyston, pypy never acheive a nice performance."
+...
+
+```ipython
+In [1]: foo = Foo()
+
+In [2]: foo.a = 2
+
+In [3]: foo.a
+Out[3]: 2
+```
+
