@@ -25,6 +25,66 @@ reveal:
 **A Fresh New Approach to Numerical Computing**
 
 ---
+note: ""
+...
+
+## Benchmark
+
+Official [benchmark](https://github.com/JuliaLang/Microbenchmarks.git)
+
+---
+
+From IBM community: [link](https://www.ibm.com/developerworks/community/blogs/jfp/entry/A_Comparison_Of_C_Julia_Python_Numba_Cython_Scipy_and_BLAS_on_LU_Factorization?lang=en)
+
+**A Comparison of C Julia Numba and Cython on LU Factorization**
+
+---
+
+![numba](/media/runtimes_103.png){: style="border: 0; box-shadow: none"}
+
+---
+
+![cython](/media/runtimes_202.png){: style="border: 0; box-shadow: none"}
+
+---
+
+![numpy](/media/runtimes_203.png){: style="border: 0; box-shadow: none"}
+
+---
+
+![scipy](/media/runtimes_204.png){: style="border: 0; box-shadow: none"}
+
+---
+
+![julia](/media/runtimes_205.png){: style="border: 0; box-shadow: none"}
+
+---
+note: "similar to C and Cython for large scale, but faster for small scale (better SIMD and other compiler optimization)"
+...
+
+![julia-cython](/media/runtimes_210.png){: style="border: 0; box-shadow: none"}
+
+---
+
+Comparition to QuTIP
+
+[benchmark](https://qojulia.org/benchmarks)
+
+---
+
+[A Comparision between Differential Equation Solvers](http://www.stochasticlifestyle.com/comparison-differential-equation-solver-suites-matlab-r-julia-python-c-fortran/)
+
+---
+
+![compare](https://i1.wp.com/www.stochasticlifestyle.com/wp-content/uploads/2017/11/de_solver_software_comparsion-1.png){: style="border: 0; box-shadow: none"}
+
+---
+
+## Why use Julia wrapper?
+
+[Why use the Julia Tensorflow](https://github.com/malmaud/TensorFlow.jl/blob/master/docs/src/why_julia.md)
+
+---
 
 ## Some Selected Features
 
@@ -878,7 +938,77 @@ note: "Julia is a great language that it allows you to write things like Python,
 ## Performance Tips
 
 ---
+note: "there are quite a lot performance tips in the documentation, but remember one thing is that there is no silver bullet, the less you cares about, the cost will be paid from other sides."
+...
 
-Provide as much information as possible in compile time.
+*The more you tell the compiler, the faster your program could be*
+
+---
+
+use BenchmarkTools to measure your performance (similar to python's `timeit`)
+
+```julia-repl
+julia> Pkg.add("BenchmarkTools")
+
+julia> @benchmark rand(1000, 1000)
+```
+
+---
+
+- Avoid global variables
+{: .fragment}
+
+- Provide as much information as possible in compile time.
+{: .fragment}
 
 e.g `StaticArray` is faster than native `Array` for small size arrays.
+{: .fragment}
+
+---
+note: "abstract types contains less detailed information about the memory, avoid using it can improve performance"
+...
+
+- Avoid containers with abstract type parameters
+
+```julia
+a = Real[] # should use Float64[] here
+if (f = rand()) < .8
+    push!(a, f)
+end
+```
+
+---
+note: "with similar reason, avoid fields with abstract type"
+...
+
+It would be hard to know the exactly type information for a type of `Any`
+
+```julia
+struct MyAmbiguousType
+    a::AbstractFloat
+end
+```
+
+---
+
+this would be better
+
+```julia
+struct MyAmbiguousType{T <: AbstractFloat}
+    a::T
+end
+```
+
+---
+note: "It is often convenient to work with data structures that may contain values of any type (arrays of type Array{Any}). But, if you're using one of these structures and happen to know the type of an element, it helps to share this knowledge with the compiler"
+...
+
+Annotate values taken from untyped locations
+
+```julia
+function foo(a::Array{Any,1})
+    x = a[1]::Int32
+    b = x+1
+    ...
+end
+```
