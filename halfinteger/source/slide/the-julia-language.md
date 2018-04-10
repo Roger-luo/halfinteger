@@ -38,6 +38,46 @@ note: "Most people will talk about Julia's performance, I will talk about it tod
 
 ---
 
+**Python (3.5 on IPython 6.3.1)** 326 ms (C implementation in numpy)
+
+```python
+import numpy as np
+
+def propagate(LHS, X, Y):
+    P = np.einsum('ijk, ipq', LHS, X)
+    Q = np.einsum('jkqp, jvrq', P, Y)
+    R = np.einsum('kprv, kvm', Q, X)
+    return R
+```
+
+```ipython
+LHS = np.random.randn(200, 10, 200)
+X = np.random.randn(200, 2, 200)
+Y = np.random.randn(10, 2, 10, 2)
+
+%timeit propagate(LHS, X, Y)
+```
+
+---
+
+**Julia (0.6 with OpenBLAS)** 24.593 ms (pure Julia implementation)
+
+```julia
+using TensorOperations
+using BenchmarkTools
+
+function propagate(LHS, X, Y)
+    @tensor R[6,7,8] := LHS[1,2,3]*X[1,4,6]*Y[2,5,7,4]*X[3,5,8]
+end
+
+BLAS.set_num_threads(1)
+LHS = randn(200, 10, 200); X = randn(200, 2, 200); Y = randn(10, 2, 10, 2);
+
+@benchmark propagate(LHS, X, Y)
+```
+
+---
+
 <div>
     <a href="https://plot.ly/~Roger-luo/9/?share_key=Lf91Q3vXngwR4BCCAxVHa2" target="_blank" title="Plot 9" style="display: block; text-align: center;"><img src="https://plot.ly/~Roger-luo/9.png?share_key=Lf91Q3vXngwR4BCCAxVHa2" alt="Plot 9" style="max-width: 100%; max-height: 20%; width: 900px;height: 600px"  width="900" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="Roger-luo:9" sharekey-plotly="Lf91Q3vXngwR4BCCAxVHa2" src="https://plot.ly/embed.js" async></script>
