@@ -36,6 +36,27 @@ note: "Most people will talk about Julia's performance, I will talk about it tod
 
 ![](/media/contract.png){: style="border: 0; box-shadow: none" height=450 width=450}
 
+---
+
+**Python (3.5 on IPython 6.3.1)**
+
+```python
+In [1]: from einsum import propagate
+
+In [2]: import numpy as np
+
+In [3]: np.__version__
+Out[3]: '1.14.2'
+
+In [4]:     LHS = np.random.randn(200, 10, 200)
+   ...:     X = np.random.randn(200, 2, 200)
+   ...:     Y = np.random.randn(10, 2, 10, 2)
+   ...: 
+   ...: 
+
+In [5]: %timeit propagate(LHS, X, Y)
+326 ms ± 20.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+```
 
 ---
 
