@@ -38,11 +38,6 @@ note: "Most people will talk about Julia's performance, I will talk about it tod
 
 ---
 
-**Python (3.5 on IPython 6.3.1)** 326 ms ± 20.2 ms (C implementation in numpy)
-**Julia (0.6 with OpenBLAS)** 24.593 ms (pure Julia implementation)
-
----
-
 <div>
     <a href="https://plot.ly/~Roger-luo/9/?share_key=Lf91Q3vXngwR4BCCAxVHa2" target="_blank" title="Plot 9" style="display: block; text-align: center;"><img src="https://plot.ly/~Roger-luo/9.png?share_key=Lf91Q3vXngwR4BCCAxVHa2" alt="Plot 9" style="max-width: 100%; max-height: 20%; width: 900px;height: 600px"  width="900" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="Roger-luo:9" sharekey-plotly="Lf91Q3vXngwR4BCCAxVHa2" src="https://plot.ly/embed.js" async></script>
