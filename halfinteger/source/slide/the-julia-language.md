@@ -25,6 +25,19 @@ reveal:
 **A Fresh New Approach to Numerical Computing**
 
 ---
+note: "Most people will talk about Julia's performance, I will talk about it today but I will also explain when you won't want to use Julia and when you should use it."
+...
+
+## Benchmark
+
+---
+
+**Tensor Contraction**
+
+![](/media/contract.png){: style="border: 0; box-shadow: none" height=450 width=450}
+
+
+---
 
 <div>
     <a href="https://plot.ly/~Roger-luo/9/?share_key=Lf91Q3vXngwR4BCCAxVHa2" target="_blank" title="Plot 9" style="display: block; text-align: center;"><img src="https://plot.ly/~Roger-luo/9.png?share_key=Lf91Q3vXngwR4BCCAxVHa2" alt="Plot 9" style="max-width: 100%; max-height: 20%; width: 900px;height: 600px"  width="900" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
