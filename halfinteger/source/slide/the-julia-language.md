@@ -49,7 +49,7 @@ http://104.224.129.42/slides/the-julia-language
 ```
 
 ---
-note: "Most people will talk about Julia's performance, I will talk about it today but I will also explain when you won't want to use Julia and when you should use it."
+note: "Most people will talk about Julia\'s performance, I will talk about it today but I will also explain when you won\'t want to use Julia and when you should use it."
 ...
 
 ## Benchmark
