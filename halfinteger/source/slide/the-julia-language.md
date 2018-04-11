@@ -25,6 +25,24 @@ reveal:
 
 **A Fresh New Approach to Numerical Computing**
 
+---
+
+**About Me**
+
+Roger Luo (罗秀哲) Research Assistant, IOP
+
+
+|                     |                     |
+|---------------------|---------------------|
+| Interests           | Quantum Information |
+|                     | Machine Learning    |
+| Expertise           | Hu You              |
+
+---
+note: "Most people will talk about Julia's performance, I will talk about it today but I will also explain when you won't want to use Julia and when you should use it."
+...
+
+## Benchmark
 
 ---
 
