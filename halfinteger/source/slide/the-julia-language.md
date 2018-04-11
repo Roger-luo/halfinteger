@@ -1197,21 +1197,3 @@ struct MyAmbiguousType{T <: AbstractFloat}
 end
 ```
 
----
-note: "It is often convenient to work with data structures that may contain values of any type (arrays of type Array{Any}). But, if you're using one of these structures and happen to know the type of an element, it helps to share this knowledge with the compiler"
-...
-
-Annotate values taken from untyped locations
-
-```julia
-function foo(a::Array{Any,1})
-    x = a[1]::Int32
-    b = x+1
-    ...
-end
-```
-
----
-
-More about performance tips, please ref the official documentation.
-
