@@ -25,18 +25,6 @@ reveal:
 
 **A Fresh New Approach to Numerical Computing**
 
----
-
-**About Me**
-
-Roger Luo (罗秀哲) Research Assistant, IOP
-
-
-|                     |                     |
-|---------------------|---------------------|
-| Interests           | Quantum Information |
-|                     | Machine Learning    |
-| Expertise           | Hu You              |
 
 ---
 
