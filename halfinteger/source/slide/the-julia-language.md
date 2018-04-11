@@ -18,11 +18,35 @@ reveal:
         transition: 'fade'
 ...
 
+
 ---
 
 ![julia-logo](/media/julia-logo.svg){: style="border: 0; box-shadow: none"}
 
 **A Fresh New Approach to Numerical Computing**
+
+---
+
+**About Me**
+
+Roger Luo (罗秀哲) Research Assistant, IOP
+
+
+|                     |                     |
+|---------------------|---------------------|
+| Interests           | Quantum Information |
+|                     | Machine Learning    |
+| Expertise           | Hu You              |
+
+---
+note: "since there will be links that I recommend, I suggest you open this presentation on your laptop before we started"
+...
+
+You can access this presentation at
+
+```
+http://104.224.129.42/slides/the-julia-language
+```
 
 ---
 note: "Most people will talk about Julia's performance, I will talk about it today but I will also explain when you won't want to use Julia and when you should use it."
@@ -509,7 +533,7 @@ play(a::Abram, b::Dima, c::Kohen) = "Abram, Dima and Kohen often play together"
 
 ---
 
-** Make your hands dirty **
+**Make your hands dirty**
 
 ---
 note: "try this"
@@ -635,6 +659,118 @@ julia> struct Even
           e::Int
           Even(e::Int) = iseven(e) ? new(e) : throw(ArgumentError("e=$e is odd"))
        end
+```
+---
+note: "Julia is an impure functional programming language, the impure means Julia won't require you to write everything in pure functions. And it actually accepts other programming styles"
+...
+
+## Functional Programming in Julia
+
+---
+note: "In Julia, programs are considered more like functions operating on data, rather than mutable objects interacting with each other like Python and Java. Julia is not a truely functional programming language and it only offers you some features for functional programming that may ease your efforts. However, since some advanced metaprogramming and feature requires some knowledge about functional programming indeed, I will introduce a little bit of it."
+...
+
+**Pure Function**
+
+Pure functions are functions that do not have side-effects and impure functions may change the global state.
+
+```julia
+x = 2
+# impure
+function f()
+    x = 3
+end
+
+# pure
+f(x) = x
+```
+
+---
+note: "like pure functional programming language, Julia works with immutable data structures by default. However, you might find that there are some comments say that there is no immutable or mutables, remember to check the time, Julia offers immutable types in more recent versions"
+...
+
+```julia
+# immutable type by default
+struct Foo
+    name::String
+end
+
+foo = Foo("Me")
+foo.name = "You" # this will cause an error
+```
+
+---
+note: "but on the other hand, like some other languages (rust and clojure), Julia do not offer tail call optimization. Tail call optimization has pros and cons, I mention this just to clarify that Julia is not a functional programming language, it is only a multi-paradiagm language with functional programming features."
+...
+
+```julia
+function foo()
+    foo()
+end
+```
+
+This will cause stack overflow.
+
+---
+note: "in fact, Julia itself is written by a tone of lisp"
+...
+
+This one is functional and is used for Julia's parser at the moment.
+
+[femtolisp](https://github.com/JeffBezanson/femtolisp)
+
+---
+note: "back to functional programming, it has pros and cons, practical benefits could be the following, OOP has some disadvantage that we may care about, OOP objects usually depends on some global state and is hard to optimize because there could be undesirable behavior such as race conditions. Functional programming will help you avoid any shared state or side-effects, which eliminates bugs caused by multiple functions competing for the same resources. computation that make use of pure functions will be very easy to scale on clusters"
+...
+
+- Laziness
+- Cacheable results
+- No order dependencies
+- Easy to parallelize
+
+---
+note: "an example of race condition could be that when you trying writing values with multiple process into a single file, the final output depends on the order randomly and it may not be the result you want. And also shared states like locks will cause deadlock, when process 1 holds resource 2 but want resource 1 and process 2 holds resource 1 and want resource 2, it will do nothing."
+...
+
+![deadlock](https://upload.wikimedia.org/wikipedia/commons/2/28/Process_deadlock.svg)
+
+---
+note: "but functional programming may cause poor readability because resulting code is often more abstract, more terse and less concrete. And moreover, it is not suitable for some data types, and therefore, I won't recommend you to fully use it for practical numerical programming in physics"
+...
+
+- `Arrays` or `Vectors`, because they have amortised constant time O(1) insert at the end and have constant time lookup, make it mutable would be a better choice
+- `Hashmaps` or `Hashset` similar
+
+---
+note: "however, the use of functional programming will look nice in some situations, using high order functions like map, reduce, etc. will help you ease the efforts."
+...
+
+```
+map(sin, rand(100, 100)) # sin is a pure function
+```
+
+equivalent to
+
+```
+sin.(rand(100, 100)) # similar with MATLAB
+```
+
+---
+note: "the return keyword, like Haskell and lisp, all the Julia's expression will return the evaluation result of the expression, but you can also add return keyword when you are using other paradiagm"
+...
+
+
+```julia
+# get 3
+begin
+    3
+end
+```
+
+```julia
+function foo()
+    3
+end
 ```
 
 ---
@@ -772,7 +908,7 @@ note: "A very special macro is @generated, which allows you to define so-called 
 ### Generated Functions
 
 ---
-note: ""
+note: "generated functions must be pure functions and it will generates expressions according to the input, and in the runtime, the program will just run through the expressions, which reduces the overheads."
 ...
 
 **calculate a number from its trinary representation**
@@ -877,6 +1013,8 @@ Print( R.real(a(2),c(1)) );
 ```
 
 ---
+note: "TACO has a very elegant and high efficiency C++ implementation of tensor constractions. But passing indexes to the compiler is still not elegant enough because the lack of builtin metaprogramming feature in C++, you can only hack it by classes and templates"
+...
 
 [taco](https://github.com/tensor-compiler/taco) tensor contraction
 
@@ -915,6 +1053,8 @@ A.compute();
 ```
 
 ---
+note: "with the builtin metaprogramming, implementing this is much easier and simpler, and of course, much safer, because the language itself will help you figure out what you want to do."
+...
 
 A brief look at the [TensorOperations.jl](https://github.com/Jutho/TensorOperations.jl) tensor contraction
 
@@ -930,6 +1070,13 @@ D=zeros(5,5,5)
     E[a,b,c] := A[a,e,f,c,f,g]*B[g,b,e] + alpha*C[c,a,b]
 end
 ```
+
+---
+note: "to understand the power of Julia's metaprogramming, it would be better to write something. I will help you to write a very simple kronecker expression parser here with only 3 hundred of lines here and although this requires some basic knowledge of writing parsers, but don't panic, just try it out!"
+...
+
+
+### Let's write a Kronecker Expression Parser
 
 ---
 
@@ -1063,3 +1210,87 @@ function foo(a::Array{Any,1})
     ...
 end
 ```
+
+---
+
+More about performance tips, please ref the official documentation.
+
+---
+note: "Then you may ask what kind of problem are you working on with this language"
+...
+
+### What we are working on?
+
+---
+
+### The Quantum Many-body Toolkit
+*Name is still not decided yet, better suggestion is welcome*{: style="font-size: 20pt"}
+
+---
+note: "What is our motivation in physics? In fact, from last year, we found that there is no mature package from the software engineering aspect in the field of quantum physics. And most of physicists' codes are too fragmented, without contiguous integration and very unsafe to use and share. And even they are lack of readability. There was some libraries that is similar to ours indeed, like ALPS, but ALPS is not very active at the moment and its C++ repository is like a mess."
+...
+
+**Motivation**
+
+- Tiny Numerical Tools like the kronecker expression parser could be **too fragmented** for a single package, but we can collect them together with **unified interface**.
+{: .fragment}
+- Some Python package is not **efficient enough** but requires a long time for developing its C++ backend
+{: .fragment}
+
+---
+
+- Some C/C++ library is efficient but lack of a **user friendly** interface to help researcher focus on their research
+{: .fragment}
+- Most Physicists do not have **professional experience** for writing **high performance** computing program with C/C++. But in quantum physics, especially quantum many-body physics, both program efficiency and development efficiency are crucial.
+{: .fragment}
+
+---
+note: "Why do we choose Julia? In fact, I wrote this package's prototype in Python with enhancement from C++ by pybind11. However, one day I found pure Julia implementation of the traversion of lattice has similar performance with my Python implementation. But I paid a week for implementing everything in C++ and bind it to python, and only one day for writing a Julia implementation."
+...
+
+What Julia offers us:
+
+**Enough Efficiency** It can approach **C/C++** implementation on speed in simple situation and may offer much better
+
+---
+note: "Last year, I was developing a famous deep learning framework called PyTorch made by Facebook from its C backend. It is an awesome framework indeed. However, when you try to implement differentiable functions in its C backend, it requires thousands of lines. But I found that with Julia's metaprogramming, I can implement them in a few hundred of lines by code generation. And they have almost the same benchmark on CPU."
+...
+
+You can acheive **High abstractions** with **low overhead** with metaprogramming by **code generation** in Julia.
+
+---
+note: "As our demo today, the kronecker expression parser is also a functionality of the package. It make use of metaprogramming feature to provide more user friendly interface"
+...
+
+**More user-friendly interface** can be implemented through Julia's metaprogramming
+
+---
+note: "Julia can call C/C++ functions directly from header files, which allows us to optimize whatever we want in C/C++ without writing any glue code"
+...
+
+**Awesome Foreign Function Interface (FFI)**
+
+Call the function `clock` from `libc.so`
+```julia
+t = ccall((:clock, "libc"), Int32, ())
+```
+
+Create a C function with Julia
+```
+function mycompare(a::T, b::T) where T
+    return convert(Cint, a < b ? -1 : a > b ? +1 : 0)::Cint
+end
+cfunction(mycompare, Cint, (Ref{Cdouble}, Ref{Cdouble}))
+```
+
+---
+note: "Julia team cares about scientists, because it is designed for science. While Python may have to care about web servers, education, gamings and etc. And moreover it is approaching its first release version 1.0. Only issues related to an iterator optimization has not been solved."
+...
+
+Julia cares about science. It is approaching 1.0 within 10 issues.
+
+---
+note: "Although, our first tagged version is not released yet, you can check our documents for what is functional at the moment and try it out. We are always welcome for comments of this package development, and please give an issue in the repository. We will accept Pull Requests after the first tagged version which will be in a few weeks"
+...
+
+Star our package's documentation at [rogerluo.me/QMTK.jl](http://rogerluo.me/QMTK.jl/)
