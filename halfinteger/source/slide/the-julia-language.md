@@ -29,6 +29,15 @@ reveal:
 
 **About Me**
 
+Roger Luo Research Assistant, IOP
+
+http://rogerluo.me
+
+|                     |                     |
+|---------------------|---------------------|
+| Interests           | Quantum Information |
+|                     | Machine Learning    |
+| Expertise           | Hu You              |
 
 ---
 note: "since there will be links that I recommend, I suggest you open this presentation on your laptop before we started"
