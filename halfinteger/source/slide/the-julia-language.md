@@ -25,12 +25,6 @@ reveal:
 
 **A Fresh New Approach to Numerical Computing**
 
----
-
-**About Me**
-
-Roger Luo (罗秀哲) Research Assistant, IOP
-
 
 ---
 note: "since there will be links that I recommend, I suggest you open this presentation on your laptop before we started"
