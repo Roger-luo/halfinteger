@@ -1215,32 +1215,3 @@ end
 
 More about performance tips, please ref the official documentation.
 
----
-note: "Then you may ask what kind of problem are you working on with this language"
-...
-
-### What we are working on?
-
----
-
-### The Quantum Many-body Toolkit
-*Name is still not decided yet, better suggestion is welcome*{: style="font-size: 20pt"}
-
----
-note: "What is our motivation in physics? In fact, from last year, we found that there is no mature package from the software engineering aspect in the field of quantum physics. And most of physicists' codes are too fragmented, without contiguous integration and very unsafe to use and share. And even they are lack of readability. There was some libraries that is similar to ours indeed, like ALPS, but ALPS is not very active at the moment and its C++ repository is like a mess."
-...
-
-**Motivation**
-
-- Tiny Numerical Tools like the kronecker expression parser could be **too fragmented** for a single package, but we can collect them together with **unified interface**.
-{: .fragment}
-- Some Python package is not **efficient enough** but requires a long time for developing its C++ backend
-{: .fragment}
-
----
-
-- Some C/C++ library is efficient but lack of a **user friendly** interface to help researcher focus on their research
-{: .fragment}
-- Most Physicists do not have **professional experience** for writing **high performance** computing program with C/C++. But in quantum physics, especially quantum many-body physics, both program efficiency and development efficiency are crucial.
-{: .fragment}
-
