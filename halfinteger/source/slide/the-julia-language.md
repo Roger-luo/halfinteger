@@ -48,6 +48,18 @@ You can find all related material at
 http://num.v2nobel.com/talks/9/
 
 ---
+
+I highly recommend you read the documents here:
+
+http://rogerluo.me/TutorialForPhysicists.jl/
+
+And install this tutorial in you Julia by
+
+```julia
+julia> Pkg.clone("https://github.com/Roger-luo/TutorialForPhysicists.jl.git")
+```
+
+---
 note: "Most people will talk about Julia's performance, I will talk about it today but I will also explain when you won't want to use Julia and when you should use it."
 ...
 
