@@ -83,6 +83,26 @@ Y = np.random.randn(10, 2, 10, 2)
 
 ---
 
+**Python (3.5 on IPython 6.3.1)** 45.1 ms (numpy.tensordot in numpy)
+
+```python
+def propagate(LHS, X, Y):
+    P = np.tensordot(LHS, X, axes=([0, ], [0, ]))
+    Q = np.tensordot(P, Y, axes=([0, 2], [0, 1]))
+    R = np.tensordot(Q, X, axes=([0, 3], [0, 1]))
+    return R
+```
+
+```ipython
+LHS = np.random.randn(200, 10, 200)
+X = np.random.randn(200, 2, 200)
+Y = np.random.randn(10, 2, 10, 2)
+
+%timeit propagate(LHS, X, Y)
+```
+
+---
+
 **Julia (0.6 with OpenBLAS)** 24.593 ms (pure Julia implementation)
 
 ```julia
