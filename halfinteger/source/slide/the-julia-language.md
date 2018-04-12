@@ -53,7 +53,7 @@ I highly recommend you read the documents here:
 
 http://rogerluo.me/TutorialForPhysicists.jl/
 
-And install this tutorial in you Julia by
+And install this tutorial in your Julia by
 
 ```julia
 julia> Pkg.clone("https://github.com/Roger-luo/TutorialForPhysicists.jl.git")
