@@ -25,7 +25,7 @@ def index():
     for each in os.listdir(source_path):
         if each.endswith('.md'):
             path = os.path.join(source_path, each)
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 pre = Presentation()
                 pre.parse(f.read())
 

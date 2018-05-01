@@ -15,7 +15,7 @@ class Post(object):
         self.configs = kwargs
         self.meta = {}
         
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             content = self.read_meta(f.read())
             self.raw = content
 
