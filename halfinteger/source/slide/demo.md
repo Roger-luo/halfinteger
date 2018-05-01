@@ -221,3 +221,8 @@ First Header  | Second Header
 Content Cell  | Content Cell
 Content Cell  | Content Cell
 
+---
+
+# UTF-8
+
+中文也可以了
