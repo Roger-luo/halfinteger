@@ -64,7 +64,7 @@ def presentation(name):
         name + '.md'
     )
 
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         pre = Presentation(**md_extensions)
         pre.parse(f.read())
 
