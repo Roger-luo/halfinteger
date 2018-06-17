@@ -27,7 +27,7 @@ def index():
             path = os.path.join(source_path, each)
             with open(path, 'r', encoding='utf-8') as f:
                 pre = Presentation()
-                pre.parse(f.read().decode())
+                pre.parse(f.read())
 
             configs = pre.meta
             configs['file'] = each[:-3]
@@ -67,7 +67,7 @@ def presentation(name):
     with open(filepath, 'r', encoding='utf-8') as f:
         pre = Presentation(**md_extensions)
         raw = f.read()
-        raw = raw.decode()
+        return type(raw)
         pre.parse(raw)
 
     if 'reveal' in pre.meta:
