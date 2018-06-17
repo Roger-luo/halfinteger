@@ -123,9 +123,53 @@ note: ""
 
 幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design for humans.
 
+---
+note: ""
+...
+
+### Hierarchical APIs
+
+---
+note: ""
+...
+
+### Flexible Block System
+
+---
+note: ""
+...
+
+### Make use of Multiple Dispatch
+
+---
+note: ""
+...
+
+### Low abstraction
 
 ---
 note: "Let's explore the quantum computing with a few demos with Yao."
 ...
 
 ## What can 幺 do?
+
+---
+
+### Demo 1: Preparing GHZ state
+
+---
+
+### Demo 2: Quantum Circuit Born Machine
+
+
+---
+note: ""
+...
+
+### ROADMAPs
+
+---
+note: ""
+...
+
+### Follow us
