@@ -66,7 +66,7 @@ def presentation(name):
 
     with open(filepath, 'r', encoding='utf-8') as f:
         pre = Presentation(**md_extensions)
-        pre.parse(f.read())
+        pre.parse(f.read().encode('utf-8'))
 
     if 'reveal' in pre.meta:
         if 'config' in pre.meta['reveal']:
