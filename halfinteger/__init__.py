@@ -12,7 +12,7 @@ class Config(BaseConfig):
         env = os.environ.get('FLASK_ENV', 'development')
         self['ENVIRONMENT'] = env.lower()
 
-        with open(config_file) as f:
+        with open(config_file, encoding='utf-8') as f:
             c = yaml.load(f)
 
         c = c.get(env, c)
