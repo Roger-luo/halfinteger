@@ -25,7 +25,7 @@ background:
     color: black
 ...
 
-![幺](/media/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}
+![幺](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}
 
 #### **Extensible**{: style='color: #CD5C5C'}, **Efficient**{: style='color: orange'} Framework for **Quantum Algorithm Design**{: style='color: #26d2a4'} for Humans.
 
@@ -111,12 +111,14 @@ Intermediate quantum computing regime:
 
 - Error mitigation
 - Testable advantage
-- Approximate optimizers
+- Approximate optimizers, Quantum machine learning
 - Quantum simulators
-- Adaptive algorithms on noisy circuits (e.g machine learning)
 
 ---
-note: ""
+note: "In near term future, the resources of quantum computing will still be limited, like the early stage, classical algorithm was designed
+on papers. We have to design new quantum algorithms and explore when quantum computers is better with classical simulation. However, simulating
+quantum computing on classical devices is hard due to its quantum nature. There are a lot of optimized classical algorithms for simulating a small
+set of quantum circuits efficiently. Moreover, in the future, researchers may want to immigrate their classical simulated algorithms directly to quantum devices. However, we also hope researchers can focus on their own algorithms rather than backend details. Therefore, we need a framework that is highly extensible but easy to use. And here comes the Yao framework."
 ...
 
 ## What is 幺？
@@ -124,22 +126,63 @@ note: ""
 幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design for humans.
 
 ---
-note: ""
+note: "We provide hierarchical APIs that give developer freedom of extending Yao.
+
+1. We extended the Julia's SparseArrays, which will be contributed to upper stream.
+2. Thanks to Julia's multiple dispatch feature, we are able to optimize operator's
+  performance with extensions, which means you can choose different optimization
+  strategy by using different extensions.
+3. We also provide some buildin optimization made by the Boost extension."
 ...
 
 ### Hierarchical APIs
 
+![structre](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/figures/framework.png){: style="border: 0; box-shadow: none" height=450}
+
 ---
-note: ""
+note: "we compare our performance to ProjectQ, a python effort that is able to simulate up to 45 qubits. With optimization
+ done by the boost extension. We have much better performance on small circuit simulation and similar performance with large
+ circuit simulation. The Q-X is ProjectQ and the Y-X is Yao."
+...
+
+![](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=450}
+
+---
+note: "All of our optimized blocks gain better performance."
+...
+
+![](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/cxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/repeatxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+
+---
+note: "Although un-optimized blocks does not as good as ProjectQ's for large number of qubits, but because of our hierarchical APIs and multiple
+dispatch, fine-grained optimization can be easily done and dispatched to certain type of circuits without any overheads."
+...
+
+![](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/toffoli-bench.png){: style="border: 0; box-shadow: none" height=300}
+![](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/crot-bench.png){: style="border: 0; box-shadow: none" height=300}
+
+---
+note: "Let's explore more about Yao's block system"
 ...
 
 ### Flexible Block System
+
+---
+
+![](/media/block_tree.svg){: style="border: 0; box-shadow: none" height=700}
 
 ---
 note: ""
 ...
 
 ### Make use of Multiple Dispatch
+
+---
+note: ""
+...
+
+### Benchmark
 
 ---
 note: ""
