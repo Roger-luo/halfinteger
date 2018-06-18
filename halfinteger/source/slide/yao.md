@@ -40,6 +40,30 @@ http://104.224.129.42/slides/
 ```
 
 ---
+
+### Install Julia:
+
+official compiler: [julialang.org/downloads](https://julialang.org/downloads/)
+
+julia pro (annaconda for julia): [juliacomputing.com](https://juliacomputing.com/products/juliapro.html)
+
+---
+
+Install our package:
+
+lastest:
+
+```julia
+julia> Pkg.clone("https://github.com/QuantumBFS/Yao.jl.git")
+```
+
+stable:
+
+```julia
+julia> Pkg.add("Yao")
+```
+
+---
 note: "classical computers have been doing great, however there are still problems that is hard for them. These problems includes:
 
 1. optimization
