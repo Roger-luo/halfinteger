@@ -30,6 +30,16 @@ background:
 #### **Extensible**{: style='color: #CD5C5C'}, **Efficient**{: style='color: orange'} Framework for **Quantum Algorithm Design**{: style='color: #26d2a4'} for Humans.
 
 ---
+
+**Available @** [rogerluo.me](http://rogerluo.me) -> click slides
+
+or type
+
+```
+http://104.224.129.42/slides/
+```
+
+---
 note: "classical computers have been doing great, however there are still problems that is hard for them. These problems includes:
 
 1. optimization
