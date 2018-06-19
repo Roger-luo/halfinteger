@@ -31,13 +31,9 @@ background:
 
 ---
 
-**Available @** [rogerluo.me](http://rogerluo.me) -> click slides
+[rogerluo.me](http://rogerluo.me)
 
-or type
-
-```
-http://104.224.129.42/slides/
-```
+![](/media/rogerluo-slide.png){: style="border: 0; box-shadow: none" height=400}
 
 ---
 
@@ -179,7 +175,8 @@ note: "we compare our performance to ProjectQ, a python effort that is able to s
  circuit simulation. The Q-X is ProjectQ and the Y-X is Yao."
 ...
 
-![bench-xyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=450}
+![bench-xyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-rxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/rot-bench.png){: style="border: 0; box-shadow: none" height=300}
 
 ---
 note: "All of our optimized blocks gain better performance."
@@ -359,6 +356,16 @@ BenchmarkTools.Trial:
   --------------
   samples:          10000
   evals/sample:     1
+```
+
+---
+note: "roll will rotate the tensor form of a quantum state and directly contract it with a quantum gate."
+...
+
+![](/media/roller.svg){: style="border: 0; box-shadow: none" height=300}
+
+```julia
+roller = roll(4, 1=>X, H, H, H)
 ```
 
 ---
