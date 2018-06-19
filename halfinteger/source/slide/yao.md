@@ -25,15 +25,15 @@ background:
     color: black
 ...
 
-![幺](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}
+[![幺](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}](https://github.com/QuantumBFS/Yao.jl)
 
-#### **Extensible**{: style='color: #CD5C5C'}, **Efficient**{: style='color: orange'} Framework for **Quantum Algorithm Design**{: style='color: #26d2a4'} for Humans.
+#### **Extensible**{: style='color: #CD5C5C'} **Efficient**{: style='color: orange'} **Quantum Algorithm Design**{: style='color: #26d2a4'} for Humans.
 
 ---
 
 [rogerluo.me](http://rogerluo.me)
 
-![](/media/rogerluo-slide.png){: style="border: 0; box-shadow: none" height=400}
+![](/media/rogerluo-slide.png){: style="border: 0; box-shadow: none" height=500}
 
 ---
 
@@ -60,89 +60,263 @@ julia> Pkg.add("Yao")
 ```
 
 ---
-note: "classical computers have been doing great, however there are still problems that is hard for them. These problems includes:
+note: "I will introduce the basics of quantum computing first, and then we will explore our recent package Yao."
 
-1. optimization
-2. chemistry & physics
-
-In order to accelerate the computation of solving those problems, scientists have proposed various computing machines
-and quantum computer is one of those promising approaches. Then, what is quantum computing?"
+background:
+  image: "/media/qc-background.png"
+  size: contain
+  color: transparent
 ...
 
-- optimization
+**Quantum Computing**
 
 ---
-note: "Let's imagine if you are managing a dinner tonight, and you have twenty attendees and four tables. Some attendees will start arguing
-if they are arranged on the same table, and some attendees want to sit on the same table, and so on. They could have a lot requirements.
-And you have to make them satisfied. Is there a solution that satisfies all the attendees? This is called the Satisfiability Problem"
 ...
 
-![SAT](/media/attendees.jpg){: style="border: 0; box-shadow: none" height=450}
+**Potential Applications for Near Term Small Quantum Computers**:
 
-**How to satisfy them?**
+- Quantum Chemistry
+- Quantum Co-Processor
+- Secret Sharing
+- Machine Learning
+
+*Ref: [Technical Roadmap for Fault-Tolerant Quantum Computing](https://www.nqit.ox.ac.uk/sites/www.nqit.ox.ac.uk/files/2016-11/NQIT%20Technical%20Roadmap.pdf)*{: .fragment style="font-size: 16px"}
 
 ---
-
-![SAT](/media/Sat_reduced_to_Clique_from_Sipser.svg){: style="border: 0; box-shadow: none" height=450 width=450}
-
-**Source: © Wikipedia**{: style="font-size: 16px;"}
-
----
-note: "modern chemistry & physics usually has to learning materials that made of multiple particles, it can be really hard to simulate
-those particles precisely sometimes."
+note: "perhaps the most promising application at the moment. Even after all the recent progress in classical algorithms for chemistry, some molecules exhibit what is known as 'strong correlation', which in practice means that conventional methods fail to yield reliable solutions for them in reasonable time. This is because available approximations normally rely on having very weak correlations. Some recent proof-of-concepts experiments have already been shown on a five"
 ...
 
-- problems in chemistry & physics
+**Quantum Chemistry**
+
+![](/media/variational-quantum-eigensolver.png){: style="border: 0; box-shadow: none" height=400}
+
+**O’Malley, P. J. J., et al. "Scalable quantum simulation of molecular energies." Physical Review X 6.3 (2016): 031007.**{: style="font-size: 16px"}
 
 ---
-
-![protein](/media/protein.jpg){: style="border: 0; box-shadow: none" height=450}
-
-**Source: © eLife Sciences Publications Ltd**{: style="font-size: 16px; line-height: 0.4;"}
-*Amino acid pairs that have co-evolved together (linked by yellow lines) give a useful hint to protein modellers, as the pairs end up close in the folded structure*{: style="font-size: 16px;"}
-
----
-note: "Quantum computers are a new kind of computation resource that make use of quantum effects."
+note: "small quantum co-processors can simulate a lager quantum computer, we can use the resources of a small quanutm computer with n qubits, to simulate (on a classical computer) a quantum computer with n+k qubits, with classical resources taht only scale exponentially with k rather than n+k. Besides, we can also simulate physical systems like a Hubbard model."
 ...
 
-## **What is quantum computing**{: style='color: #09add1'}
+**Quantum Co-processor**
+
+![](/media/trotter-step.png){: style="border: 0; box-shadow: none" height=400}
+
+**Kreula, Juha M., et al. "Few-qubit quantum-classical simulation of strongly correlated lattice fermions." EPJ Quantum Technology 3.1 (2016): 11.**{: style="font-size: 16px"}
 
 ---
-note: "It may help us solve a set of problem with less complexity. e.g it can solve RSAs."
+note: "Quantum devices can be used to accelerate machine learning tasks. But acceleration is not the only thing. Quantum based models may have
+better representation power comparing to classical models."
 ...
 
-- It can factor numbers with exponential speed up comparing to classical computers (the Shor algorithm)
-- I can search an unordered list in $O(\sqrt{n})$ time (Grover's algorithm, 1996)
-- It can calculate 3SAT with less complexity
-    - ($O(1.15^n)$, [Schöning's Algorithm](http://homepages.cwi.nl/~rdewolf/schoning99.pdf))
-    {: style="font-size: 25px"}
-    - [Record-Breaking Algorithms for SAT](https://digitalcommons.utep.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1256&context=cs_techrep)
-    {: style="font-size: 25px"}
-    - [Improved Randomized Algorithms for 3-SAT](http://dx.doi.org/10.1007/978-3-642-17517-6_9) ($O(1.32113^n)$ classical comparison)
-    {: style="font-size: 25px"}
-    - etc.
-    {: style="font-size: 25px"}
+**Machine Learning**
+
+![](/media/xanadu-chips.png){: style="border: 0; box-shadow: none" height=400}
+
+**Xandadu AI, Quantum Machine Learning 1.0**{: style="font-size: 16px"}
 
 ---
-note: "It can simulate physical systems involves quantum effects like proteins, particles, etc."
+note: "e.g. It is proved by Xun Gao in his recent paper that their quantum generative model is exponentially more powerful comparing to represent probability distributions compared with classical generative models and has exponential speedup in training and inference at least for some instances under a reasonable assumption in computational complexity theory"
 ...
 
-> let the computer itself be built of quantum mechanical elements which obey quantum mechanical laws.
+![](/media/QGM.png){: style="border: 0; box-shadow: none" height=400}
 
-*Feynman, 1982, Int. J. Theor. Phys. 21, 467–488.*{: style="font-size: 20px"}
-
-[Using Quantum Computers for Quantum Simulation](http://www.mdpi.com/1099-4300/12/11/2268/pdf){: .fragment style="font-size: 20px"}
+**Gao, Xun, Zhengyu Zhang, and Luming Duan. "An efficient quantum algorithm for generative machine learning." arXiv preprint arXiv:1711.02038 (2017).**{: style="font-size: 16px"}
 
 ---
-note: "A potential quantum (near) future"
+note: "moreover, near term noisy quantum devices may be used for machine learning directly. Recently, a new modeled called Quantum Circuit Born Machine is proposed."
 ...
 
-Intermediate quantum computing regime:
+![](/media/QCBM.png){: style="border: 0; box-shadow: none" height=300}
+![](/media/QCL.png){: style="border: 0; box-shadow: none" height=300}
 
-- Error mitigation
-- Testable advantage
-- Approximate optimizers, Quantum machine learning
-- Quantum simulators
+**Liu, Jin-Guo, and Lei Wang. "Differentiable learning of quantum circuit Born machine." arXiv preprint arXiv:1804.04168 (2018).**{: style="font-size: 16px"}
+
+**Mitarai, Kosuke, et al. "Quantum circuit learning." arXiv preprint arXiv:1803.00745 (2018).**{: style="font-size: 16px"}
+
+---
+
+**Quantum Computing is Approaching**
+
+---
+note: "Quantum computing is approaching in recent years."
+...
+
+![](/media/QC-is-near.JPG){: style="border: 0; box-shadow: none" height=500}
+
+**Source: © By Thomas A. Campbell, Ph.D., FutureGrasp, LLC**{: style="font-size: 16px;"}
+
+---
+note: "this is the roadmap for quantum computing"
+...
+
+![roadmap](/media/roadmap-qc.jpg){: style="border: 0; box-shadow: none" height=500}
+
+**J. Ignacio Cirac & H. Jeff Kimble. "Quantum optics, what next?" Nature Photonics volume 11, pages 18–20 (2017).**{: style="font-size: 16px"}
+
+---
+note: "Google/IBM/Intel is approach quantum advantage"
+...
+
+![Google](/media/google-chips.png){: style="border: 0; box-shadow: none" height=200}
+![IBM](/media/IBM-CES.jpeg){: style="border: 0; box-shadow: none" height=200}
+
+**Source: © By Nick Summers, engadget / Google AI lab**{: style="font-size: 16px;"}
+
+---
+note: "I will now introduce some basics about quantum computing"
+...
+
+**Quantum Computing: Basics**
+
+---
+note: ""
+...
+
+**Review: Linear Algebra**
+
+---
+
+**Matrix Vector Multiplication**
+
+$$
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix}
+\begin{pmatrix}
+x \\
+y
+\end{pmatrix} =
+\begin{pmatrix}
+ax + by \\
+cx + dy
+\end{pmatrix}
+$$
+
+---
+
+**Matrix Matrix Multiplication**
+
+$$
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix}\begin{pmatrix}
+w & x\\
+y & z
+\end{pmatrix} = \begin{pmatrix}
+aw + by & ax + bz\\
+cw + dy & cx + dz
+\end{pmatrix}
+$$
+
+---
+
+**Identity Matrix**
+
+$$
+I\cdot \begin{pmatrix}
+a\\
+b\\
+c\\
+d
+\end{pmatrix} = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1\\
+\end{pmatrix}\begin{pmatrix}
+a\\
+b\\
+c\\
+d
+\end{pmatrix} = \begin{pmatrix}
+a\\
+b\\
+c\\
+d
+\end{pmatrix}
+$$
+
+---
+
+**Swap Matrix**
+
+$$
+\begin{pmatrix}
+1 & 0 & 0 &0\\
+0 & 0 & 1 &0\\
+0 & 1 & 0 &0\\
+0 & 0 & 0 &1
+\end{pmatrix}\begin{pmatrix}
+0\\
+1\\
+0\\
+0
+\end{pmatrix} = \begin{pmatrix}
+0\\
+0\\
+1\\
+0
+\end{pmatrix}
+$$
+
+---
+note: "tensor product of vectors"
+...
+
+$$
+\begin{pmatrix}
+x_0 \\
+x_1
+\end{pmatrix}\otimes\begin{pmatrix}
+y_0 \\
+y_1
+\end{pmatrix} = \begin{pmatrix}
+x_0 \begin{pmatrix}
+y_0\\
+y_1
+\end{pmatrix} \\
+x_1 \begin{pmatrix}
+y_0\\
+y_1
+\end{pmatrix}
+\end{pmatrix} = \begin{pmatrix}
+x_0 y_0 \\
+x_0 y_1 \\
+x_1 y_0 \\
+x_1 y_1
+\end{pmatrix}
+$$
+
+---
+note: "representing multiple classical bits"
+...
+
+$$
+|00\rangle = \begin{pmatrix}
+1\\
+0
+\end{pmatrix} \otimes \begin{pmatrix}
+1\\
+0
+\end{pmatrix} = \begin{pmatrix}
+1\\
+0\\
+0\\
+0
+\end{pmatrix}
+$$
+
+---
+note: "The matrix form of classical bit operations is actually called the truth table."
+...
+
+| name     | function        | matrix                                      |
+|:---------|:----------------|:--------------------------------------------|
+| Identity | $f(x) = x$      | $\begin{pmatrix} 1 & 0\\0 & 1\end{pmatrix}$ |
+| Negation | $f(x) = \neg x$ | $\begin{pmatrix} 0 & 1\\1 & 1\end{pmatrix}$ |
+| Const-0  | $f(x) = 0$      | $\begin{pmatrix} 1 & 1\\0 & 0\end{pmatrix}$ |
+| Const-1  | $f(x) = 1$      | $\begin{pmatrix} 0 & 0\\1 & 1\end{pmatrix}$ |
 
 ---
 note: "In near term future, the resources of quantum computing will still be limited, like the early stage, classical algorithm was designed
@@ -153,45 +327,7 @@ set of quantum circuits efficiently. Moreover, in the future, researchers may wa
 
 ## What is 幺？
 
-幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design for humans.
-
----
-note: "We provide hierarchical APIs that give developer freedom of extending Yao.
-
-1. We extended the Julia's SparseArrays, which will be contributed to upper stream.
-2. Thanks to Julia's multiple dispatch feature, we are able to optimize operator's
-  performance with extensions, which means you can choose different optimization
-  strategy by using different extensions.
-3. We also provide some buildin optimization made by the Boost extension."
-...
-
-### Hierarchical APIs
-
-![structre](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/figures/framework.png){: style="border: 0; box-shadow: none" height=450}
-
----
-note: "we compare our performance to ProjectQ, a python effort that is able to simulate up to 45 qubits. With optimization
- done by the boost extension. We have much better performance on small circuit simulation and similar performance with large
- circuit simulation. The Q-X is ProjectQ and the Y-X is Yao."
-...
-
-![bench-xyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=300}
-![bench-rxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/rot-bench.png){: style="border: 0; box-shadow: none" height=300}
-
----
-note: "All of our optimized blocks gain better performance."
-...
-
-![bench-cxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/cxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
-![bench-repeatxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/repeatxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
-
----
-note: "Although un-optimized blocks does not as good as ProjectQ's for large number of qubits, but because of our hierarchical APIs and multiple
-dispatch, fine-grained optimization can be easily done and dispatched to certain type of circuits without any overheads."
-...
-
-![bench-toffoli](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/toffoli-bench.png){: style="border: 0; box-shadow: none" height=300}
-![bench-crot](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/crot-bench.png){: style="border: 0; box-shadow: none" height=300}
+幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design.
 
 ---
 note: "Let's explore the quantum computing with a few demos with Yao."
@@ -386,6 +522,45 @@ julia> using IJulia
 julia> notebook(joinpath(Pkg.dir("Yao"), "examples"))
 
 ```
+
+---
+note: "We provide hierarchical APIs that give developer freedom of extending Yao.
+
+1. We extended the Julia's SparseArrays, which will be contributed to upper stream.
+2. Thanks to Julia's multiple dispatch feature, we are able to optimize operator's
+  performance with extensions, which means you can choose different optimization
+  strategy by using different extensions.
+3. We also provide some buildin optimization made by the Boost extension."
+...
+
+### Hierarchical APIs
+
+![structre](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/figures/framework.png){: style="border: 0; box-shadow: none" height=450}
+
+---
+note: "we compare our performance to ProjectQ, a python effort that is able to simulate up to 45 qubits. With optimization
+ done by the boost extension. We have much better performance on small circuit simulation and similar performance with large
+ circuit simulation. The Q-X is ProjectQ and the Y-X is Yao."
+...
+
+![bench-xyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-rxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/rot-bench.png){: style="border: 0; box-shadow: none" height=300}
+
+---
+note: "All of our optimized blocks gain better performance."
+...
+
+![bench-cxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/cxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-repeatxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/repeatxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+
+---
+note: "Although un-optimized blocks does not as good as ProjectQ's for large number of qubits, but because of our hierarchical APIs and multiple
+dispatch, fine-grained optimization can be easily done and dispatched to certain type of circuits without any overheads."
+...
+
+![bench-toffoli](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/toffoli-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-crot](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/crot-bench.png){: style="border: 0; box-shadow: none" height=300}
+
 
 ---
 note: "Let's explore more about Yao's block system"
