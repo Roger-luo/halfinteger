@@ -25,7 +25,7 @@ background:
     color: black
 ...
 
-[![幺](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}](https://github.com/QuantumBFS/Yao.jl)
+[![幺](https://quantumbfs.github.io/Yao.jl/latest/assets/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}](https://github.com/QuantumBFS/Yao.jl)
 
 #### **Extensible**{: style='color: #CD5C5C'} **Efficient**{: style='color: orange'} **Quantum Algorithm Design**{: style='color: #26d2a4'} for Humans.
 
@@ -160,6 +160,24 @@ note: "Google/IBM/Intel is approach quantum advantage"
 ![IBM](/media/IBM-CES.jpeg){: style="border: 0; box-shadow: none" height=200}
 
 **Source: © By Nick Summers, engadget / Google AI lab**{: style="font-size: 16px;"}
+
+---
+note: "In near term future, the resources of quantum computing will still be limited, like the early stage, classical algorithm was designed
+on papers. We have to design new quantum algorithms and explore when quantum computers is better with classical simulation. However, simulating
+quantum computing on classical devices is hard due to its quantum nature. There are a lot of optimized classical algorithms for simulating a small
+set of quantum circuits efficiently. Moreover, in the future, researchers may want to immigrate their classical simulated algorithms directly to quantum devices. However, we also hope researchers can focus on their own algorithms rather than backend details. Therefore, we need a framework that is highly extensible but easy to use. And here comes the Yao framework."
+...
+
+## What is 幺？
+
+幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design.
+
+---
+note: "Let's explore the quantum computing with a few demos with Yao."
+...
+
+## What can 幺 do?
+
 
 ---
 note: "I will now introduce some basics about quantum computing"
@@ -308,34 +326,168 @@ $$
 $$
 
 ---
+
+$$
+|10\rangle = \begin{pmatrix}
+0\\
+1
+\end{pmatrix} \otimes \begin{pmatrix}
+1\\
+0
+\end{pmatrix} = \begin{pmatrix}
+0\\
+0\\
+1\\
+0
+\end{pmatrix}
+$$
+
+---
+
+$$
+|01\rangle = ?
+$$
+
+---
+note: "You can try what is the vector form of 1 with Yao."
+...
+
+**Try this**
+
+```julia
+register(bit"01") |> statevec
+```
+
+---
 note: "The matrix form of classical bit operations is actually called the truth table."
 ...
 
 | name     | function        | matrix                                      |
 |:---------|:----------------|:--------------------------------------------|
 | Identity | $f(x) = x$      | $\begin{pmatrix} 1 & 0\\0 & 1\end{pmatrix}$ |
-| Negation | $f(x) = \neg x$ | $\begin{pmatrix} 0 & 1\\1 & 1\end{pmatrix}$ |
+| Negation | $f(x) = \neg x$ | $\begin{pmatrix} 0 & 1\\1 & 0\end{pmatrix}$ |
 | Const-0  | $f(x) = 0$      | $\begin{pmatrix} 1 & 1\\0 & 0\end{pmatrix}$ |
 | Const-1  | $f(x) = 1$      | $\begin{pmatrix} 0 & 0\\1 & 1\end{pmatrix}$ |
 
 ---
-note: "In near term future, the resources of quantum computing will still be limited, like the early stage, classical algorithm was designed
-on papers. We have to design new quantum algorithms and explore when quantum computers is better with classical simulation. However, simulating
-quantum computing on classical devices is hard due to its quantum nature. There are a lot of optimized classical algorithms for simulating a small
-set of quantum circuits efficiently. Moreover, in the future, researchers may want to immigrate their classical simulated algorithms directly to quantum devices. However, we also hope researchers can focus on their own algorithms rather than backend details. Therefore, we need a framework that is highly extensible but easy to use. And here comes the Yao framework."
-...
 
-## What is 幺？
+**Negation**
 
-幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design.
+```julia
+with!(X, register(bit"0")) |> statevec
+```
 
 ---
-note: "Let's explore the quantum computing with a few demos with Yao."
-...
 
-## What can 幺 do?
+**Operations on multiple Bits: CNOT**
+
+$$
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1\\
+0 & 0 & 1 & 0
+\end{pmatrix}
+$$
 
 ---
+
+**Try**
+
+```julia
+g = control(2, [1, ], 2=>X)
+```
+
+```julia
+with!(g, register(bit"10")) |> statevec
+
+with!(g, register(bit"00")) |> statevec
+```
+
+---
+
+## quantum bits
+
+---
+note: "In fact, what we used for classical bits are a special case of quantum bits. For the classical case,
+the state vector is only a one-hot vector. However, in quantum case, this vector can be any normalized complex
+valued vector, or the so-called a vector in Hilbert space. Or in quantum physics this is called a quantum state.
+As you see, this generalized representation of the state of a bit can have a value that is not 0 or 1. In fact they
+will have some possibility to have value 0 and 1, the possibility is the square norm of each element."
+...
+
+$$
+\begin{pmatrix}
+\frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}}
+\end{pmatrix}\quad
+\begin{pmatrix}
+\frac{-1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}}
+\end{pmatrix}\quad
+\begin{pmatrix}
+im\\
+0
+\end{pmatrix}
+$$
+
+---
+note: "It will collapse to one of the state if you measure it."
+...
+
+construct a quantum bit: $\frac{|0000\rangle + |1111\rangle}{\sqrt{2}}$
+
+```julia
+r = register(bit"0000") + register(bit"1111")
+normalize!(r)
+```
+
+Then measure it:
+
+```julia
+measure(r, 5)
+```
+
+---
+note: "such a single qubit can be described by a point on a sphere, since we have the constrain"
+...
+
+We have constrain:
+
+$$
+||a||^2 + ||b||^2 = 1 \Rightarrow \begin{pmatrix}
+cos(\frac{\theta}{2})\\
+e^{im\phi} sin(\frac{\theta}{2})
+\end{pmatrix}
+$$
+
+![Bloch-sphere](/media/bloch-sphere.jpg){: style="border: 0; box-shadow: none" height=200}
+
+---
+note: "now we have quantum bits, which is called qubits, then how about a quantum gate. The Negation stays, however
+since we are using a complex vector now, we will have some operations on other direction."
+...
+
+| name         | matrix                                         |
+|:-------------|:-----------------------------------------------|
+| Identity     | $\begin{pmatrix} 1 & 0\\0 & 1\end{pmatrix}$    |
+| X (Negation) | $\begin{pmatrix} 0 & 1\\1 & 0\end{pmatrix}$    |
+| Y            | $\begin{pmatrix} 0 & -im\\im & 0\end{pmatrix}$ |
+| Z            | $\begin{pmatrix} 1 & 0\\0 & -1\end{pmatrix}$   |
+
+---
+
+**Try them see what happens**
+
+```julia
+r = register(bit"0000") + register(bit"0000")
+normalize!(r)
+apply!(r, X)
+```
+
+---
+note: "now we know the basics of qubits and quantum gates. Let's explore what is a quantum circuit and algorithms with some demos."
+...
 
 ### Demo 1: Preparing GHZ state
 
@@ -344,7 +496,7 @@ note: "Let's explore the quantum computing with a few demos with Yao."
 A GHZ state is a quantum state looks like:
 
 $$
-\frac{|0\cdots 0\rangle + |1\cdots 1\rangle}{\sqrt{2}}
+\frac{|0\cdots 0\rangle - |1\cdots 1\rangle}{\sqrt{2}}
 $$
 
 We will use a quantum circuit to prepare a GHZ state from $|0\cdots 0\rangle$
@@ -535,7 +687,7 @@ note: "We provide hierarchical APIs that give developer freedom of extending Yao
 
 ### Hierarchical APIs
 
-![structre](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/figures/framework.png){: style="border: 0; box-shadow: none" height=450}
+![structre](https://quantumbfs.github.io/Yao.jl/latest/assets/figures/framework.png){: style="border: 0; box-shadow: none" height=450}
 
 ---
 note: "we compare our performance to ProjectQ, a python effort that is able to simulate up to 45 qubits. With optimization
@@ -543,23 +695,23 @@ note: "we compare our performance to ProjectQ, a python effort that is able to s
  circuit simulation. The Q-X is ProjectQ and the Y-X is Yao."
 ...
 
-![bench-xyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=300}
-![bench-rxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/rot-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-xyz](https://quantumbfs.github.io/Yao.jl/latest/assets/benchmarks/xyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-rxyz](https://quantumbfs.github.io/Yao.jl/latest/assets/benchmarks/rot-bench.png){: style="border: 0; box-shadow: none" height=300}
 
 ---
 note: "All of our optimized blocks gain better performance."
 ...
 
-![bench-cxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/cxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
-![bench-repeatxyz](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/repeatxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-cxyz](https://quantumbfs.github.io/Yao.jl/latest/assets/benchmarks/cxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-repeatxyz](https://quantumbfs.github.io/Yao.jl/latest/assets/benchmarks/repeatxyz-bench.png){: style="border: 0; box-shadow: none" height=300}
 
 ---
 note: "Although un-optimized blocks does not as good as ProjectQ's for large number of qubits, but because of our hierarchical APIs and multiple
 dispatch, fine-grained optimization can be easily done and dispatched to certain type of circuits without any overheads."
 ...
 
-![bench-toffoli](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/toffoli-bench.png){: style="border: 0; box-shadow: none" height=300}
-![bench-crot](https://rawgit.com/QuantumBFS/Yao.jl/master/docs/src/assets/benchmarks/crot-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-toffoli](https://quantumbfs.github.io/Yao.jl/latest/assets/benchmarks/toffoli-bench.png){: style="border: 0; box-shadow: none" height=300}
+![bench-crot](https://quantumbfs.github.io/Yao.jl/latest/assets/benchmarks/crot-bench.png){: style="border: 0; box-shadow: none" height=300}
 
 
 ---
