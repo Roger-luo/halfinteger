@@ -1,7 +1,7 @@
 ---
 title: 幺
 # subtitle: Roger's Fine Slide Generator
-description: Extensible, Efficient Framework for Quantum Algorithm Design for Humans.
+description: 简单好用的量子算法设计框架.
 author: Roger
 
 markdown:
@@ -27,7 +27,7 @@ background:
 
 [![幺](https://quantumbfs.github.io/Yao.jl/latest/assets/logo-light.svg){: style="margin: 0; border: none; box-shadow: none; background: none;" width=200 height=200}](https://github.com/QuantumBFS/Yao.jl)
 
-#### **Extensible**{: style='color: #CD5C5C'} **Efficient**{: style='color: orange'} **Quantum Algorithm Design**{: style='color: #26d2a4'} for Humans.
+#### **高效**{: style='color: orange'}好用**可扩展**{: style='color: #CD5C5C'} 的**量子算法设计框架**{: style='color: #26d2a4'}
 
 ---
 
@@ -37,30 +37,30 @@ background:
 
 ---
 
-### Install Julia:
+###  安装Julia:
 
-official compiler: [julialang.org/downloads](https://julialang.org/downloads/)
+官方编译器: [julialang.org/downloads](https://julialang.org/downloads/)
 
-julia pro (annaconda for julia): [juliacomputing.com](https://juliacomputing.com/products/juliapro.html)
+julia pro (Julia的annaconda): [juliacomputing.com](https://juliacomputing.com/products/juliapro.html)
 
 ---
 
-Install our package:
+安装我们的框架:
 
-lastest:
+最新版（lastest）:
 
 ```julia
 julia> Pkg.clone("https://github.com/QuantumBFS/Yao.jl.git")
 ```
 
-stable:
+稳定版（stable）:
 
 ```julia
 julia> Pkg.add("Yao")
 ```
 
 ---
-note: "I will introduce the basics of quantum computing first, and then we will explore our recent package Yao."
+note: "首先我会简要介绍一下量子计算，然后我们会用幺来探索一些量子算法。"
 
 background:
   image: "/media/qc-background.png"
@@ -68,22 +68,21 @@ background:
   color: transparent
 ...
 
-**Quantum Computing**
+**量子计算**
 
 ---
 ...
 
-**Potential Applications for Near Term Small Quantum Computers**:
+**近期小型量子计算机的潜在应用**:
 
-- Quantum Chemistry
-- Quantum Co-Processor
-- Secret Sharing
-- Machine Learning
+- 量子化学
+- 量子协处理器
+- 机器学习
 
-*Ref: [Technical Roadmap for Fault-Tolerant Quantum Computing](https://www.nqit.ox.ac.uk/sites/www.nqit.ox.ac.uk/files/2016-11/NQIT%20Technical%20Roadmap.pdf)*{: .fragment style="font-size: 16px"}
+*参见: [Technical Roadmap for Fault-Tolerant Quantum Computing](https://www.nqit.ox.ac.uk/sites/www.nqit.ox.ac.uk/files/2016-11/NQIT%20Technical%20Roadmap.pdf)*{: .fragment style="font-size: 16px"}
 
 ---
-note: "perhaps the most promising application at the moment. Even after all the recent progress in classical algorithms for chemistry, some molecules exhibit what is known as 'strong correlation', which in practice means that conventional methods fail to yield reliable solutions for them in reasonable time. This is because available approximations normally rely on having very weak correlations. Some recent proof-of-concepts experiments have already been shown on a five"
+note: "量子化学也许是目前量子计算最有前景的应用，即便我们已经有了丰富的经典量子化学算法，然而对于一些被称作强关联的分子，传统方法往往无法有效计算出它们的解。这是因为很多经典的近似都有着弱关联的假设。而近期已经有一些概念实验已经在一个有5个比特的量子计算机上展示了量子模拟的威力。这篇文章使用了一个量子线路中的变分参数来学习分子的基态。"
 ...
 
 **Quantum Chemistry**
@@ -93,28 +92,27 @@ note: "perhaps the most promising application at the moment. Even after all the 
 **O’Malley, P. J. J., et al. "Scalable quantum simulation of molecular energies." Physical Review X 6.3 (2016): 031007.**{: style="font-size: 16px"}
 
 ---
-note: "small quantum co-processors can simulate a lager quantum computer, we can use the resources of a small quanutm computer with n qubits, to simulate (on a classical computer) a quantum computer with n+k qubits, with classical resources taht only scale exponentially with k rather than n+k. Besides, we can also simulate physical systems like a Hubbard model."
+note: "小型量子计算机可以作为协处理器完成模拟大型量子计算机的功能。实际上已经被证明我们可以用n个比特的小型量子计算机来模拟n+k个比特的量子计算机，其所需的经典计算资源仅仅随着k发生指数增长。 Besides, we can also simulate physical systems like a Hubbard model."
 ...
 
-**Quantum Co-processor**
+**量子协处理器**
 
 ![](/media/trotter-step.png){: style="border: 0; box-shadow: none" height=400}
 
 **Kreula, Juha M., et al. "Few-qubit quantum-classical simulation of strongly correlated lattice fermions." EPJ Quantum Technology 3.1 (2016): 11.**{: style="font-size: 16px"}
 
 ---
-note: "Quantum devices can be used to accelerate machine learning tasks. But acceleration is not the only thing. Quantum based models may have
-better representation power comparing to classical models."
+note: "量子计算机还可以被用来加速机器学习任务。此外出了加速，量子计算机作为一种新的计算资源，也能够让我们使用更强大的模型。"
 ...
 
-**Machine Learning**
+**机器学习**
 
 ![](/media/xanadu-chips.png){: style="border: 0; box-shadow: none" height=400}
 
 **Xandadu AI, Quantum Machine Learning 1.0**{: style="font-size: 16px"}
 
 ---
-note: "e.g. It is proved by Xun Gao in his recent paper that their quantum generative model is exponentially more powerful comparing to represent probability distributions compared with classical generative models and has exponential speedup in training and inference at least for some instances under a reasonable assumption in computational complexity theory"
+note: "例如郜勋在最近一篇文章中证明了量子生成模型比经典生成模型有更好的表达能力。"
 ...
 
 ![](/media/QGM.png){: style="border: 0; box-shadow: none" height=400}
@@ -122,7 +120,7 @@ note: "e.g. It is proved by Xun Gao in his recent paper that their quantum gener
 **Gao, Xun, Zhengyu Zhang, and Luming Duan. "An efficient quantum algorithm for generative machine learning." arXiv preprint arXiv:1711.02038 (2017).**{: style="font-size: 16px"}
 
 ---
-note: "moreover, near term noisy quantum devices may be used for machine learning directly. Recently, a new modeled called Quantum Circuit Born Machine is proposed."
+note: "此外，短期内出现的无法纠错的量子计算机实际上也许更加适合做机器学习任务，最近刘金国和王磊提出了一种叫做量子线路波恩机的模型。它能够直接被短期内的小型量子计算机实现。"
 ...
 
 ![](/media/QCBM.png){: style="border: 0; box-shadow: none" height=300}
@@ -134,10 +132,10 @@ note: "moreover, near term noisy quantum devices may be used for machine learnin
 
 ---
 
-**Quantum Computing is Approaching**
+**量子计算就要来了**
 
 ---
-note: "Quantum computing is approaching in recent years."
+note: "量子计算机的比特数目一直在提高，而最近IBM，Google，Intel都宣布了40个比特以上的机型."
 ...
 
 ![](/media/QC-is-near.JPG){: style="border: 0; box-shadow: none" height=500}
@@ -145,7 +143,7 @@ note: "Quantum computing is approaching in recent years."
 **Source: © By Thomas A. Campbell, Ph.D., FutureGrasp, LLC**{: style="font-size: 16px;"}
 
 ---
-note: "this is the roadmap for quantum computing"
+note: "这是一个量子计算机发展的规划图"
 ...
 
 ![roadmap](/media/roadmap-qc.jpg){: style="border: 0; box-shadow: none" height=500}
@@ -153,7 +151,7 @@ note: "this is the roadmap for quantum computing"
 **J. Ignacio Cirac & H. Jeff Kimble. "Quantum optics, what next?" Nature Photonics volume 11, pages 18–20 (2017).**{: style="font-size: 16px"}
 
 ---
-note: "Google/IBM/Intel is approach quantum advantage"
+note: "Google/IBM/Intel正在实现量子优势，或者说是量子霸权。这是Google和IBM所展出的接近量子优势的机器。"
 ...
 
 ![Google](/media/google-chips.png){: style="border: 0; box-shadow: none" height=200}
@@ -162,38 +160,35 @@ note: "Google/IBM/Intel is approach quantum advantage"
 **Source: © By Nick Summers, engadget / Google AI lab**{: style="font-size: 16px;"}
 
 ---
-note: "In near term future, the resources of quantum computing will still be limited, like the early stage, classical algorithm was designed
-on papers. We have to design new quantum algorithms and explore when quantum computers is better with classical simulation. However, simulating
-quantum computing on classical devices is hard due to its quantum nature. There are a lot of optimized classical algorithms for simulating a small
-set of quantum circuits efficiently. Moreover, in the future, researchers may want to immigrate their classical simulated algorithms directly to quantum devices. However, we also hope researchers can focus on their own algorithms rather than backend details. Therefore, we need a framework that is highly extensible but easy to use. And here comes the Yao framework."
+note: "在不远的将来，量子计算资源依然受限，正如早起的经典算法都是在纸上设计的一样，在很长的一段时间里我也需要使用经典计算机来辅助我们设计量子算法。然而在经典计算机上模拟量子算法往往是非常困难的，由于量子系统的空间会指数增长，我们需要在技术上小心处理各种技术问题。并且实际上有一些类型的量子线路是可以进行高效模拟的，而作为量子信息理论的研究人员，我们并不希望时常去关注这些与核心内容无关的技术细节，而我们又希望我们可以根据自己的研究需要修改一些算法细节。此外，由于目前我们还不清楚量子编程的具体形式，一个高效的量子算法设计框架也能够帮助我们探索如何给量子计算机编程。综上，我们需要一个高性能，高扩展性，而又好用的框架，所以我们开发了幺。幺这个字来自于幺正矩阵，或者你也可以认为它来自于麻将。"
 ...
 
-## What is 幺？
+## 幺是什么？
 
-幺(Yao) is a **Extensible**, **Efficient** framework for quantum algorithm design.
+幺(Yao)是一个**可扩展**的**高性能**量子算法设计框架
 
 ---
-note: "Let's explore the quantum computing with a few demos with Yao."
+note: "那么我们首先来通过幺介绍简要介绍一下量子计算。"
 ...
 
-## What can 幺 do?
+## 幺可以用来做什么？
 
 
 ---
-note: "I will now introduce some basics about quantum computing"
+note: "下面我们来通过幺熟悉一些量子计算的基础"
 ...
 
-**Quantum Computing: Basics**
+**量子计算基础**
 
 ---
 note: ""
 ...
 
-**Review: Linear Algebra**
+**回顾：线性代数**
 
 ---
 
-**Matrix Vector Multiplication**
+**矩阵向量的乘积**
 
 $$
 \begin{pmatrix}
@@ -212,7 +207,7 @@ $$
 
 ---
 
-**Matrix Matrix Multiplication**
+**矩阵和矩阵的乘法**
 
 $$
 \begin{pmatrix}
@@ -229,7 +224,7 @@ $$
 
 ---
 
-**Identity Matrix**
+**单位矩阵**
 
 $$
 I\cdot \begin{pmatrix}
@@ -257,7 +252,7 @@ $$
 
 ---
 
-**Swap Matrix**
+**置换矩阵**
 
 $$
 \begin{pmatrix}
@@ -279,7 +274,7 @@ $$
 $$
 
 ---
-note: "tensor product of vectors"
+note: "向量的张量乘"
 ...
 
 $$
@@ -307,7 +302,7 @@ x_1 y_1
 $$
 
 ---
-note: "representing multiple classical bits"
+note: "用向量来表示多个经典比特"
 ...
 
 $$
@@ -349,7 +344,7 @@ $$
 $$
 
 ---
-note: "You can try what is the vector form of 1 with Yao."
+note: "让我们在幺中尝试一下经典比特的向量形式是什么"
 ...
 
 **Try this**
@@ -359,10 +354,10 @@ register(bit"01") |> statevec
 ```
 
 ---
-note: "The matrix form of classical bit operations is actually called the truth table."
+note: "经典比特操作的矩阵形式，它也被称为真值表。"
 ...
 
-| name     | function        | matrix                                      |
+| 名称     | 函数            | 矩阵                                        |
 |:---------|:----------------|:--------------------------------------------|
 | Identity | $f(x) = x$      | $\begin{pmatrix} 1 & 0\\0 & 1\end{pmatrix}$ |
 | Negation | $f(x) = \neg x$ | $\begin{pmatrix} 0 & 1\\1 & 0\end{pmatrix}$ |
@@ -371,15 +366,15 @@ note: "The matrix form of classical bit operations is actually called the truth 
 
 ---
 
-**Negation**
+**求反**
 
 ```julia
-register(bit"0") |> X |> statevec
+with!(X, register(bit"0")) |> statevec
 ```
 
 ---
 
-**Operations on multiple Bits: CNOT**
+**多比特的操作：控制非门**
 
 $$
 \begin{pmatrix}
@@ -392,21 +387,21 @@ $$
 
 ---
 
-**Try**
+**试试这个**
 
 ```julia
 g = control(2, [1, ], 2=>X)
 ```
 
 ```julia
-register(bit"10") |> g |> statevec
+with!(g, register(bit"10")) |> statevec
 
-register(bit"00") |> g |> statevec
+with!(g, register(bit"00")) |> statevec
 ```
 
 ---
 
-## quantum bits
+## 量子比特
 
 ---
 note: "In fact, what we used for classical bits are a special case of quantum bits. For the classical case,
@@ -432,7 +427,7 @@ im\\
 $$
 
 ---
-note: "It will collapse to one of the state if you measure it."
+note: "当你测量它的时候它就会塌缩到其中之一上去。"
 ...
 
 construct a quantum bit: $\frac{|0000\rangle + |1111\rangle}{\sqrt{2}}$
@@ -447,19 +442,6 @@ Then measure it:
 ```julia
 measure(r, 5)
 ```
-
----
-note: "The simplest measurement is called POVM, mathematically, it is a kind of projection"
-...
-
-**What is measure?**
-
-$$
-|000\rangle\langle000| = \begin{pmatrix}
-1 & 0\\
-0 & 0
-\end{pmatrix}
-$$
 
 ---
 note: "such a single qubit can be described by a point on a sphere, since we have the constrain"
@@ -566,6 +548,43 @@ julia> r = register(bit"0000")
 ```
 
 ---
+note: "Then let's apply the circuit to the register, we provide two methods to make sure this operation is safe."
+...
+
+You can define how to apply several blocks inside a context with julia's **do** block:
+
+```julia
+# creates a new register
+new = with(r) do r
+  r |> kron(i==1?i=>X:i=>H for i in 1:4)
+  r |> control([2, ], 1=>X) |> control([4, ], 3=>X)
+  r |> control([3, ], 1=>X) |> control([4, ], 3=>X)
+  r |> kron(i=>H for i in 1:4)
+end
+
+# apply blocks in-place
+with!(r) do r
+  r |> kron(i==1?i=>X:i=>H for i in 1:4)
+  r |> control([2, ], 1=>X) |> control([4, ], 3=>X)
+  r |> control([3, ], 1=>X) |> control([4, ], 3=>X)
+  r |> kron(i=>H for i in 1:4)
+end
+```
+
+---
+note: "Or for convenient you can also simply input a block as the first argument"
+...
+
+Or use a wrapped quantum circuit.
+
+```julia
+# creates a new register
+new = with(circuit, r)
+# in-place
+with!(circuit, r)
+```
+
+---
 note: "let's measure the result for 1000 times to see what happens, the GHZ state will collapse to 0000 or 1111 when you measure it!"
 ...
 
@@ -588,7 +607,7 @@ roller = roll(4, 1=>X, H, H, H)
 ```julia
 julia> using BenchmarkTools
 
-julia> @benchmark apply!($(register(bit"0000")), roller)
+julia> @benchmark with!(roller, $(register(bit"0000")))
 BenchmarkTools.Trial:
   memory estimate:  4.80 KiB
   allocs estimate:  55
@@ -608,7 +627,7 @@ extend the whole block system to meet your own needs if you want."
 ...
 
 ```julia
-julia> @benchmark apply!($(register(bit"0000")), kronecker)
+julia> @benchmark with!(kronecker, $(register(bit"0000")))
 BenchmarkTools.Trial:
   memory estimate:  18.55 KiB
   allocs estimate:  120
@@ -832,11 +851,3 @@ then implicit."
 ---
 
 **Follow us on Github**: [Yao.jl](https://github.com/QuantumBFS/Yao.jl)
-
----
-background:
-    image: ''
-    color: black
-...
-
-A **Quantum****BFS**{: style="color: #9a9696;"} package

@@ -10,9 +10,9 @@ blueprint = Blueprint(
     template_folder='templates'
 )
 
-# @blueprint.route('/')
-# def get_index():
-#     pass
+@blueprint.route('/')
+def get_index():
+    return 'hello'
 
 @blueprint.route('/media/<filename>')
 def get_img(filename):
